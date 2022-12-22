@@ -31,6 +31,7 @@ set -e
 # versioning
 GITHUB_SOURCE="v0.11.0"
 SCRIPT_RELEASE="v0.11.0"
+WING_VERSION="v1.7.2"
 
 #################################
 ######## General checks #########
@@ -54,8 +55,8 @@ fi
 #################################
 
 # download URLs
-WINGS_DL_BASE_URL="https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_"
-GITHUB_BASE_URL="https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/$GITHUB_SOURCE"
+WINGS_DL_BASE_URL="https://github.com/pterodactyl/wings/releases/download/${WING_VERSION}/wings_linux_"
+GITHUB_BASE_URL="https://raw.githubusercontent.com/fokusdotid/pterodactyl-installer/$GITHUB_SOURCE"
 
 COLOR_RED='\033[0;31m'
 COLOR_NC='\033[0m'

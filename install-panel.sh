@@ -49,6 +49,9 @@ fi
 GITHUB_SOURCE="v0.11.0"
 SCRIPT_RELEASE="v0.11.0"
 
+# Version Panel
+PANEL_VERSION="v1.10.4"
+
 FQDN=""
 
 # Default MySQL credentials
@@ -72,8 +75,8 @@ ASSUME_SSL=false
 CONFIGURE_LETSENCRYPT=false
 
 # download URLs
-PANEL_DL_URL="https://github.com/pterodactyl/panel/releases/latest/download/panel.tar.gz"
-GITHUB_BASE_URL="https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/$GITHUB_SOURCE"
+PANEL_DL_URL="https://github.com/pterodactyl/panel/releases/download/${PANEL_VERSION}/panel.tar.gz"
+GITHUB_BASE_URL="https://raw.githubusercontent.com/fokusdotid/pterodactyl-installer/$GITHUB_SOURCE"
 
 # ufw firewall
 CONFIGURE_UFW=false
