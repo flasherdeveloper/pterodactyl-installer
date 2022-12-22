@@ -35,14 +35,14 @@ LOG_PATH="/var/log/pterodactyl-installer.log"
 
 # exit with error status code if user is not root
 if [[ $EUID -ne 0 ]]; then
-  echo "* This script must be executed with root privileges (sudo)." 1>&2
+  echo "* Skrip ini harus dijalankan dengan hak akses root (sudo)." 1>&2
   exit 1
 fi
 
 # check for curl
 if ! [ -x "$(command -v curl)" ]; then
-  echo "* curl is required in order for this script to work."
-  echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
+  echo "* curl diperlukan agar skrip ini berfungsi."
+  echo "* instal menggunakan apt (Debian dan derivatives) atau yum/dnf (CentOS)"
   exit 1
 fi
 
@@ -55,7 +55,7 @@ error() {
   COLOR_NC='\033[0m'
 
   echo ""
-  echo -e "* ${COLOR_RED}ERROR${COLOR_NC}: $1"
+  echo -e "* ${COLOR_RED}ERROR CUK${COLOR_NC}: $1"
   echo ""
 }
 
@@ -67,22 +67,22 @@ execute() {
 }
 
 done=false
-
+clear
+sleep 0.5
 output "Pterodactyl installation script @ $SCRIPT_VERSION"
 output
-output "Script ini sudah di recode menggunakan versi:"
-output "Panel: v1.10.4"
-output "Wings v1.7.2"
+output "Original Script By @vilhelmprytz (Vilhelm Prytz)"
+output "di Recode oleh @fokusdotid (Fokus ID)"
 output
-output "Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>"
+output "Skrip ini tidak terkait dengan Proyek Pterodactyl resmi."
+output "Jika ingin menggunakan script resmi, silahkan kunjungi:"
 output "https://github.com/vilhelmprytz/pterodactyl-installer"
 output
-output "Recode By @FokusDotId (Fokus ID)"
+output "Made with ❤️ by @fokusdotid (Fokus ID)"
 output "https://github.com/fokusdotid/pterodactyl-installer"
 output
-output "Sponsoring/Donations: https://github.com/vilhelmprytz/pterodactyl-installer?sponsor=1"
-output "This script is not associated with the official Pterodactyl Project."
-
+output
+output "Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>"
 output
 
 PANEL_LATEST="$GITHUB_BASE_URL/$SCRIPT_VERSION/install-panel.sh"
@@ -95,13 +95,13 @@ WINGS_CANARY="$GITHUB_BASE_URL/master/install-wings.sh"
 
 while [ "$done" == false ]; do
   options=(
-    "Install the panel"
+    "Install panel"
     "Install Wings"
-    "Install both [0] and [1] on the same machine (wings script runs after panel)\n"
+    "Install [0] dan [1] secara bersamaan (script wings berjalan setelah panel)\n"
 
-    "Install panel with canary version of the script (the versions that lives in master, may be broken!)"
-    "Install Wings with canary version of the script (the versions that lives in master, may be broken!)"
-    "Install both [6] and [7] on the same machine (wings script runs after panel)"
+    "Install panel dengan versi canary (versi yang ada di master, mungkin rusak!)"
+    "Install Wings dengan versi canary (versi yang ada di master, mungkin rusak!)"
+    "Install [6] dan [7] secara bersamaan (script wings berjalan setelah panel)"
   )
 
   actions=(
@@ -114,18 +114,18 @@ while [ "$done" == false ]; do
     "$PANEL_CANARY;$WINGS_CANARY"
   )
 
-  output "What would you like to do?"
+  output "Apa yang ingin Anda lakukan?"
 
   for i in "${!options[@]}"; do
     output "[$i] ${options[$i]}"
   done
 
-  echo -n "* Input 0-$((${#actions[@]} - 1)): "
+  echo -n "* Pilih 0-$((${#actions[@]} - 1)): "
   read -r action
 
-  [ -z "$action" ] && error "Input is required" && continue
+  [ -z "$action" ] && error "Pilihan diperlukan!" && continue
 
   valid_input=("$(for ((i = 0; i <= ${#actions[@]} - 1; i += 1)); do echo "${i}"; done)")
-  [[ ! " ${valid_input[*]} " =~ ${action} ]] && error "Invalid option"
+  [[ ! " ${valid_input[*]} " =~ ${action} ]] && error "Opsi tidak valid!"
   [[ " ${valid_input[*]} " =~ ${action} ]] && done=true && IFS=";" read -r i1 i2 <<<"${actions[$action]}" && execute "$i1" "$i2"
 done

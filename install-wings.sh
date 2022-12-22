@@ -39,14 +39,14 @@ WING_VERSION="v1.7.2"
 
 # exit with error status code if user is not root
 if [[ $EUID -ne 0 ]]; then
-  echo "* This script must be executed with root privileges (sudo)." 1>&2
+  echo "* Skrip ini harus dijalankan dengan hak akses root (sudo)." 1>&2
   exit 1
 fi
 
 # check for curl
 if ! [ -x "$(command -v curl)" ]; then
-  echo "* curl is required in order for this script to work."
-  echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
+  echo "* curl diperlukan agar skrip ini berfungsi."
+  echo "* instal menggunakan apt (Debian dan derivatives) atau yum/dnf (CentOS)"
   exit 1
 fi
 
@@ -94,7 +94,7 @@ get_latest_release() {
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
 
-echo "* Retrieving release information.."
+echo "* Mengambil informasi rilis.."
 WINGS_VERSION="$(get_latest_release "pterodactyl/wings")"
 
 ####### Other library functions ########
@@ -163,7 +163,7 @@ password_input() {
 
 print_error() {
   echo ""
-  echo -e "* ${COLOR_RED}ERROR${COLOR_NC}: $1"
+  echo -e "* ${COLOR_RED}ERROR CUK${COLOR_NC}: $1"
   echo ""
 }
 
@@ -171,7 +171,7 @@ print_warning() {
   COLOR_YELLOW='\033[1;33m'
   COLOR_NC='\033[0m'
   echo ""
-  echo -e "* ${COLOR_YELLOW}WARNING${COLOR_NC}: $1"
+  echo -e "* ${COLOR_YELLOW}WARNENG${COLOR_NC}: $1"
   echo ""
 }
 
@@ -668,8 +668,14 @@ main() {
   print_brake 70
   echo "* Pterodactyl Wings installation script @ $SCRIPT_RELEASE"
   echo "*"
-  echo "* Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>"
+  echo "* Original Script By @vilhelmprytz (Vilhelm Prytz)"
+  echo "* di Recode oleh @fokusdotid (Fokus ID)"
+  echo "*"
+  echo "* Jika ingin menggunakan script resmi, silahkan kunjungi:"
   echo "* https://github.com/vilhelmprytz/pterodactyl-installer"
+  echo "*"
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
   echo "*"
   echo "* This script is not associated with the official Pterodactyl Project."
   echo "*"
@@ -686,6 +692,15 @@ main() {
   echo "* on the panel and then place the configuration file on the node manually after"
   echo "* the installation has finished. Read more about this process on the"
   echo "* official documentation: $(hyperlink 'https://pterodactyl.io/wings/1.0/installing.html#configure')"
+  echo "* "
+  echo "* Original Script By @vilhelmprytz (Vilhelm Prytz)"
+  echo "* di Recode oleh @fokusdotid (Fokus ID)"
+  echo "* "
+  echo "* Jika ingin menggunakan script resmi, silahkan kunjungi:"
+  echo "* https://github.com/vilhelmprytz/pterodactyl-installer"
+  echo "* "
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
   echo "* "
   echo -e "* ${COLOR_RED}Note${COLOR_NC}: this script will not start Wings automatically (will install systemd service, not start it)."
   echo -e "* ${COLOR_RED}Note${COLOR_NC}: this script will not enable swap (for docker)."
@@ -790,7 +805,16 @@ function goodbye {
   echo "* Once you have verified that it is working, use CTRL+C and then start Wings as a service (runs in the background)"
   echo "*"
   echo "* systemctl start wings"
-  echo "*"
+  echo "* "
+  echo "* Original Script By @vilhelmprytz (Vilhelm Prytz)"
+  echo "* di Recode oleh @fokusdotid (Fokus ID)"
+  echo "* "
+  echo "* Jika ingin menggunakan script resmi, silahkan kunjungi:"
+  echo "* https://github.com/vilhelmprytz/pterodactyl-installer"
+  echo "* "
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
+  echo "* "
   echo -e "* ${COLOR_RED}Note${COLOR_NC}: It is recommended to enable swap (for Docker, read more about it in official documentation)."
   [ "$CONFIGURE_FIREWALL" == false ] && echo -e "* ${COLOR_RED}Note${COLOR_NC}: If you haven't configured your firewall, ports 8080 and 2022 needs to be open."
   print_brake 70

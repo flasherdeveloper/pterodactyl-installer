@@ -32,14 +32,14 @@ set -e
 
 # exit with error status code if user is not root
 if [[ $EUID -ne 0 ]]; then
-  echo "* This script must be executed with root privileges (sudo)." 1>&2
+  echo "* Skrip ini harus dijalankan dengan hak akses root (sudo)." 1>&2
   exit 1
 fi
 
 # check for curl
 if ! [ -x "$(command -v curl)" ]; then
-  echo "* curl is required in order for this script to work."
-  echo "* install using apt (Debian and derivatives) or yum/dnf (CentOS)"
+  echo "* curl diperlukan agar skrip ini berfungsi."
+  echo "* instal menggunakan apt (Debian dan derivatives) atau yum/dnf (CentOS)"
   exit 1
 fi
 
@@ -95,12 +95,12 @@ email_regex="^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-
 # define version using information from GitHub
 get_latest_release() {
   curl --silent "https://api.github.com/repos/$1/releases/tags/$PANEL_VERSION" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+    grep '"tag_name":' |                                                         # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                                 # Pluck JSON value
 }
 
 # pterodactyl version
-echo "* Retrieving release information.."
+echo "* Mengambil informasi rilis.."
 PTERODACTYL_VERSION="$(get_latest_release "pterodactyl/panel")"
 
 ####### lib func #######
@@ -128,7 +128,7 @@ print_error() {
   COLOR_NC='\033[0m'
 
   echo ""
-  echo -e "* ${COLOR_RED}ERROR${COLOR_NC}: $1"
+  echo -e "* ${COLOR_RED}ERROR CUK${COLOR_NC}: $1"
   echo ""
 }
 
@@ -136,7 +136,7 @@ print_warning() {
   COLOR_YELLOW='\033[1;33m'
   COLOR_NC='\033[0m'
   echo ""
-  echo -e "* ${COLOR_YELLOW}WARNING${COLOR_NC}: $1"
+  echo -e "* ${COLOR_YELLOW}WARNENG${COLOR_NC}: $1"
   echo ""
 }
 
@@ -223,10 +223,10 @@ password_input() {
 
 ask_letsencrypt() {
   if [ "$CONFIGURE_UFW" == false ] && [ "$CONFIGURE_FIREWALL_CMD" == false ]; then
-    print_warning "Let's Encrypt requires port 80/443 to be opened! You have opted out of the automatic firewall configuration; use this at your own risk (if port 80/443 is closed, the script will fail)!"
+    print_warning "Let's Encrypt membutuhkan port 80/443 untuk dibuka! Anda telah memilih keluar dari konfigurasi firewall otomatis; gunakan ini dengan risiko Anda sendiri (jika port 80/443 ditutup, skrip akan gagal)!"
   fi
 
-  echo -e -n "* Do you want to automatically configure HTTPS using Let's Encrypt? (y/N): "
+  echo -e -n "* Apakah Anda ingin mengonfigurasi HTTPS secara otomatis menggunakan Let's Encrypt? (y/N): "
   read -r CONFIRM_SSL
 
   if [[ "$CONFIRM_SSL" =~ [Yy] ]]; then
@@ -236,10 +236,10 @@ ask_letsencrypt() {
 }
 
 ask_assume_ssl() {
-  echo "* Let's Encrypt is not going to be automatically configured by this script (user opted out)."
-  echo "* You can 'assume' Let's Encrypt, which means the script will download a nginx configuration that is configured to use a Let's Encrypt certificate but the script won't obtain the certificate for you."
-  echo "* If you assume SSL and do not obtain the certificate, your installation will not work."
-  echo -n "* Assume SSL or not? (y/N): "
+  echo "* Let's Encrypt tidak akan dikonfigurasi secara otomatis oleh skrip ini (pengguna memilih keluar)."
+  echo "* Anda dapat 'mengasumsikan' Let's Encrypt, yang berarti skrip akan mengunduh konfigurasi nginx yang dikonfigurasi untuk menggunakan sertifikat Let's Encrypt tetapi skrip tidak akan mendapatkan sertifikat untuk Anda."
+  echo "* Jika Anda mengasumsikan SSL dan tidak mendapatkan sertifikat, penginstalan Anda tidak akan berfungsi."
+  echo -n "* Asumsikan SSL atau tidak? (y/N): "
   read -r ASSUME_SSL_INPUT
 
   [[ "$ASSUME_SSL_INPUT" =~ [Yy] ]] && ASSUME_SSL=true
@@ -250,15 +250,15 @@ check_FQDN_SSL() {
   if [[ $(invalid_ip "$FQDN") == 1 && $FQDN != 'localhost' ]]; then
     SSL_AVAILABLE=true
   else
-    print_warning "* Let's Encrypt will not be available for IP addresses."
-    echo "* To use Let's Encrypt, you must use a valid domain name."
+    print_warning "* Let's Encrypt tidak akan tersedia untuk alamat IP."
+    echo "* Untuk menggunakan Let's Encrypt, Anda harus menggunakan nama domain yang valid."
   fi
 }
 
 ask_firewall() {
   case "$OS" in
   ubuntu | debian)
-    echo -e -n "* Do you want to automatically configure UFW (firewall)? (y/N): "
+    echo -e -n "* Apakah Anda ingin mengonfigurasi UFW (firewall) secara otomatis? (y/N): "
     read -r CONFIRM_UFW
 
     if [[ "$CONFIRM_UFW" =~ [Yy] ]]; then
@@ -267,7 +267,7 @@ ask_firewall() {
     fi
     ;;
   centos)
-    echo -e -n "* Do you want to automatically configure firewall-cmd (firewall)? (y/N): "
+    echo -e -n "* Apakah Anda ingin mengkonfigurasi firewall-cmd (firewall) secara otomatis? (y/N): "
     read -r CONFIRM_FIREWALL_CMD
 
     if [[ "$CONFIRM_FIREWALL_CMD" =~ [Yy] ]]; then
@@ -320,14 +320,14 @@ detect_distro() {
 check_os_comp() {
   CPU_ARCHITECTURE=$(uname -m)
   if [ "${CPU_ARCHITECTURE}" != "x86_64" ]; then # check the architecture
-    print_warning "Detected CPU architecture $CPU_ARCHITECTURE"
-    print_warning "Using any other architecture than 64 bit (x86_64) will cause problems."
+    print_warning "Terdeteksi arsitektur CPU $CPU_ARCHITECTURE"
+    print_warning "Menggunakan arsitektur selain 64 bit (x86_64) akan menyebabkan masalah."
 
-    echo -e -n "* Are you sure you want to proceed? (y/N):"
+    echo -e -n "* Apakah Anda yakin ingin melanjutkan? aku sih y (y/N):"
     read -r choice
 
     if [[ ! "$choice" =~ [Yy] ]]; then
-      print_error "Installation aborted!"
+      print_error "Instalasi dibatalkan!"
       exit 1
     fi
   fi
@@ -360,7 +360,7 @@ check_os_comp() {
     echo "* $OS $OS_VER is supported."
   else
     echo "* $OS $OS_VER is not supported"
-    print_error "Unsupported OS"
+    print_error "OS tidak didukung, awokawok :v"
     exit 1
   fi
 }
@@ -376,7 +376,7 @@ install_composer() {
 
 # Download pterodactyl files
 ptdl_dl() {
-  echo "* Downloading pterodactyl panel files .. "
+  echo "* Mengunduh file panel pterodactyl .. "
   mkdir -p /var/www/pterodactyl
   cd /var/www/pterodactyl || exit
 
@@ -389,15 +389,15 @@ ptdl_dl() {
   COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
 
   php artisan key:generate --force
-  echo "* Downloaded pterodactyl panel files & installed composer dependencies!"
+  echo "* File pterodactyl panel & composer dependencies terinstall!"
 }
 
 # Create a databse with user
 create_database() {
   if [ "$OS" == "centos" ]; then
     # secure MariaDB
-    echo "* MariaDB secure installation. The following are safe defaults."
-    echo "* Set root password? [Y/n] Y"
+    echo "* Instalasi aman MariaDB. Berikut ini adalah default yang aman."
+    echo "* Tetapkan kata sandi root? [Y/n] Y"
     echo "* Remove anonymous users? [Y/n] Y"
     echo "* Disallow root login remotely? [Y/n] Y"
     echo "* Remove test database and access to it? [Y/n] Y"
@@ -407,8 +407,8 @@ create_database() {
     [ "$OS_VER_MAJOR" == "7" ] && mariadb-secure-installation
     [ "$OS_VER_MAJOR" == "8" ] && mysql_secure_installation
 
-    echo "* The script should have asked you to set the MySQL root password earlier (not to be confused with the pterodactyl database user password)"
-    echo "* MySQL will now ask you to enter the password before each command."
+    echo "* Skrip seharusnya meminta Anda untuk mengatur kata sandi root MySQL sebelumnya (jangan bingung dengan kata sandi pengguna basis data pterodactyl)"
+    echo "* MySQL sekarang akan meminta Anda memasukkan kata sandi sebelum setiap perintah."
 
     echo "* Create MySQL user."
     mysql -u root -p -e "CREATE USER '${MYSQL_USER}'@'127.0.0.1' IDENTIFIED BY '${MYSQL_PASSWORD}';"
@@ -830,8 +830,8 @@ letsencrypt() {
 
   # Check if it succeded
   if [ ! -d "/etc/letsencrypt/live/$FQDN/" ] || [ "$FAILED" == true ]; then
-    print_warning "The process of obtaining a Let's Encrypt certificate failed!"
-    echo -n "* Still assume SSL? (y/N): "
+    print_warning "Proses mendapatkan sertifikat Let's Encrypt gagal!"
+    echo -n "* Masih mengasumsikan SSL? (y/N): "
     read -r CONFIGURE_SSL
 
     if [[ "$CONFIGURE_SSL" =~ [Yy] ]]; then
@@ -898,7 +898,7 @@ configure_nginx() {
 ##### MAIN FUNCTIONS #####
 
 perform_install() {
-  echo "* Starting installation.. this might take a while!"
+  echo "* Memulai penginstalan.. ini mungkin memakan waktu cukup lama!"
 
   case "$OS" in
   debian | ubuntu)
@@ -944,8 +944,8 @@ perform_install() {
 main() {
   # check if we can detect an already existing installation
   if [ -d "/var/www/pterodactyl" ]; then
-    print_warning "The script has detected that you already have Pterodactyl panel on your system! You cannot run the script multiple times, it will fail!"
-    echo -e -n "* Are you sure you want to proceed? (y/N): "
+    print_warning "Skrip telah mendeteksi bahwa Anda sudah memiliki panel Pterodactyl di sistem Anda! Anda tidak dapat menjalankan skrip beberapa kali, itu akan gagal!"
+    echo -e -n "* Apakah Anda yakin ingin melanjutkan? (y/N): "
     read -r CONFIRM_PROCEED
     if [[ ! "$CONFIRM_PROCEED" =~ [Yy] ]]; then
       print_error "Installation aborted!"
@@ -959,8 +959,14 @@ main() {
   print_brake 70
   echo "* Pterodactyl panel installation script @ $SCRIPT_RELEASE"
   echo "*"
-  echo "* Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>"
+  echo "* Original Script By @vilhelmprytz (Vilhelm Prytz)"
+  echo "* di Recode oleh @fokusdotid (Fokus ID)"
+  echo "*"
+  echo "* Jika ingin menggunakan script resmi, silahkan kunjungi:"
   echo "* https://github.com/vilhelmprytz/pterodactyl-installer"
+  echo "*"
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
   echo "*"
   echo "* This script is not associated with the official Pterodactyl Project."
   echo "*"
@@ -973,23 +979,23 @@ main() {
 
   # set database credentials
   print_brake 72
-  echo "* Database configuration."
+  echo "* Konfigurasi Database."
   echo ""
-  echo "* This will be the credentials used for communication between the MySQL"
-  echo "* database and the panel. You do not need to create the database"
-  echo "* before running this script, the script will do that for you."
+  echo "* Ini akan menjadi kredensial yang digunakan untuk komunikasi antara MySQL"
+  echo "* database dan panel. Anda tidak perlu membuat database"
+  echo "* sebelum menjalankan skrip ini, skrip akan melakukannya untuk Anda."
   echo ""
 
   MYSQL_DB="-"
   while [[ "$MYSQL_DB" == *"-"* ]]; do
-    required_input MYSQL_DB "Database name (panel): " "" "panel"
-    [[ "$MYSQL_DB" == *"-"* ]] && print_error "Database name cannot contain hyphens"
+    required_input MYSQL_DB "Nama database (panel): " "" "panel"
+    [[ "$MYSQL_DB" == *"-"* ]] && print_error "Nama database tidak boleh mengandung tanda hubung"
   done
 
   MYSQL_USER="-"
   while [[ "$MYSQL_USER" == *"-"* ]]; do
     required_input MYSQL_USER "Database username (pterodactyl): " "" "pterodactyl"
-    [[ "$MYSQL_USER" == *"-"* ]] && print_error "Database user cannot contain hyphens"
+    [[ "$MYSQL_USER" == *"-"* ]] && print_error "Database username tidak boleh mengandung tanda hubung"
   done
 
   # MySQL password input
@@ -997,27 +1003,27 @@ main() {
     tr -dc 'A-Za-z0-9!"#$%&()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 64
     echo
   )
-  password_input MYSQL_PASSWORD "Password (press enter to use randomly generated password): " "MySQL password cannot be empty" "$rand_pw"
+  password_input MYSQL_PASSWORD "Kata sandi (tekan enter untuk menggunakan kata sandi yang dibuat secara acak): " "MySQL password cannot be empty" "$rand_pw"
 
   readarray -t valid_timezones <<<"$(curl -s $GITHUB_BASE_URL/configs/valid_timezones.txt)"
-  echo "* List of valid timezones here $(hyperlink "https://www.php.net/manual/en/timezones.php")"
+  echo "* Daftar zona waktu yang valid di sini $(hyperlink "https://www.php.net/manual/en/timezones.php")"
 
   while [ -z "$timezone" ]; do
-    echo -n "* Select timezone [Europe/Stockholm]: "
+    echo -n "* Pilih zona waktu [Europe/Stockholm]: "
     read -r timezone_input
 
     array_contains_element "$timezone_input" "${valid_timezones[@]}" && timezone="$timezone_input"
     [ -z "$timezone_input" ] && timezone="Europe/Stockholm" # because köttbullar!
   done
 
-  email_input email "Provide the email address that will be used to configure Let's Encrypt and Pterodactyl: " "Email cannot be empty or invalid"
+  email_input email "Berikan alamat email yang akan digunakan untuk mengonfigurasi Let's Encrypt dan Pterodactyl: " "Email cannot be empty or invalid"
 
   # Initial admin account
-  email_input user_email "Email address for the initial admin account: " "Email cannot be empty or invalid"
-  required_input user_username "Username for the initial admin account: " "Username cannot be empty"
-  required_input user_firstname "First name for the initial admin account: " "Name cannot be empty"
-  required_input user_lastname "Last name for the initial admin account: " "Name cannot be empty"
-  password_input user_password "Password for the initial admin account: " "Password cannot be empty"
+  email_input user_email "Alamat email untuk akun admin: " "Email cannot be empty or invalid"
+  required_input user_username "Nama pengguna untuk akun admin: " "Username cannot be empty"
+  required_input user_firstname "Nama depan untuk akun admin: " "Name cannot be empty"
+  required_input user_lastname "Nama belakang untuk akun admin: " "Name cannot be empty"
+  password_input user_password "Kata sandi untuk akun admin: " "Password cannot be empty"
 
   print_brake 72
 
@@ -1049,7 +1055,7 @@ main() {
   summary
 
   # confirm installation
-  echo -e -n "\n* Initial configuration completed. Continue with installation? (y/N): "
+  echo -e -n "\n* Konfigurasi selesai. Lanjutkan dengan instalasi? (y/N): "
   read -r CONFIRM
   if [[ "$CONFIRM" =~ [Yy] ]]; then
     perform_install
@@ -1063,20 +1069,23 @@ main() {
 summary() {
   print_brake 62
   echo "* Pterodactyl panel $PTERODACTYL_VERSION with nginx on $OS"
-  echo "* Database name: $MYSQL_DB"
-  echo "* Database user: $MYSQL_USER"
-  echo "* Database password: (censored)"
-  echo "* Timezone: $timezone"
+  echo "* Nama Database: $MYSQL_DB"
+  echo "* Pengguna Database: $MYSQL_USER"
+  echo "* Kata Sandi Database: (censored)"
+  echo "* Zona waktu: $timezone"
   echo "* Email: $email"
-  echo "* User email: $user_email"
+  echo "* Email Pengguna: $user_email"
   echo "* Username: $user_username"
-  echo "* First name: $user_firstname"
-  echo "* Last name: $user_lastname"
-  echo "* User password: (censored)"
+  echo "* Nama depan: $user_firstname"
+  echo "* Nama belakang: $user_lastname"
+  echo "* Katasandi pengguna: (censored)"
   echo "* Hostname/FQDN: $FQDN"
   echo "* Configure Firewall? $CONFIGURE_FIREWALL"
   echo "* Configure Let's Encrypt? $CONFIGURE_LETSENCRYPT"
-  echo "* Assume SSL? $ASSUME_SSL"
+  echo "* Asumsikan SSL? $ASSUME_SSL"
+  echo "*"
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
   print_brake 62
 }
 
@@ -1092,6 +1101,9 @@ goodbye() {
   echo "*"
   echo "* Installation is using nginx on $OS"
   echo "* Thank you for using this script."
+  echo "*"
+  echo "* Made with ❤️ by @fokusdotid (Fokus ID)"
+  echo "* https://github.com/fokusdotid/pterodactyl-installer"
   [ "$CONFIGURE_FIREWALL" == false ] && echo -e "* ${COLOR_RED}Note${COLOR_NC}: If you haven't configured the firewall: 80/443 (HTTP/HTTPS) is required to be open!"
   print_brake 62
 }
