@@ -70,8 +70,15 @@ done=false
 
 output "Pterodactyl installation script @ $SCRIPT_VERSION"
 output
+output "Script ini sudah di recode menggunakan versi:"
+output "Panel: v1.10.4"
+output "Wings v1.7.2"
+output
 output "Copyright (C) 2018 - 2022, Vilhelm Prytz, <vilhelm@prytznet.se>"
 output "https://github.com/vilhelmprytz/pterodactyl-installer"
+output
+output "Recode By @FokusDotId (Fokus ID)"
+output "https://github.com/fokusdotid/pterodactyl-installer"
 output
 output "Sponsoring/Donations: https://github.com/vilhelmprytz/pterodactyl-installer?sponsor=1"
 output "This script is not associated with the official Pterodactyl Project."
