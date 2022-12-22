@@ -55,7 +55,7 @@ fi
 #################################
 
 # download URLs
-WINGS_DL_BASE_URL="https://github.com/pterodactyl/wings/releases/download/${WING_VERSION}/wings_linux_"
+WINGS_DL_BASE_URL="https://github.com/pterodactyl/wings/releases/download/$WING_VERSION/wings_linux_"
 GITHUB_BASE_URL="https://raw.githubusercontent.com/fokusdotid/pterodactyl-installer/$GITHUB_SOURCE"
 
 COLOR_RED='\033[0;31m'
@@ -89,7 +89,7 @@ regex="^(([A-Za-z0-9]+((\.|\-|\_|\+)?[A-Za-z0-9]?)*[A-Za-z0-9]+)|[A-Za-z0-9]+)@(
 #################################
 
 get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+  curl --silent "https://api.github.com/repos/$1/releases/tags/$WING_VERSION" | # Get latest release from GitHub api
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
